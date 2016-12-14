@@ -5,7 +5,7 @@
 ###创建对象实例
 
 ```
-
+$obj = new \houdunwang\arr\Arr();
 ```
 
 ###根据键名获取数据
@@ -13,24 +13,24 @@
 如果键名不存在时返回默认值，支持键名的点语法
 ```
 $d=['a'=>1,'b'=>2];
-Arr::get($d,'c','没有数据哟');
+$obj->get($d,'c','没有数据哟');
 ```
 使用点语法查找：
 ```
 $d = ['web' => [ 'id' => 1, 'url' => 'houdunwang.com' ]];
-p(Arr::get($d,'web.url'));
+p($obj->get($d,'web.url'));
 ```
 ###设置数组元素值支持点语法
 
 ```
 $data=[];
-p(Arr::set($data,'a.b.c',99));
+p($obj->set($data,'a.b.c',99));
 ```
 
 ###改变数组键名大小写
 
 ```
-Arr::keyCase(array('name'=>'houdunwang',array('url'=>'hdphp.com')),1); 
+$obj->keyCase(array('name'=>'houdunwang',array('url'=>'hdphp.com')),1); 
 
 第2个参数为类型： 1 大写  0 小写
 ```
@@ -38,13 +38,13 @@ Arr::keyCase(array('name'=>'houdunwang',array('url'=>'hdphp.com')),1);
 ###不区分大小写检测键名是否存
 
 ```
-Arr::keyExists('Hd',['hd'=>'后盾网']);
+$obj->keyExists('Hd',['hd'=>'后盾网']);
 ```
 
 ###数组值大小写转换
 
 ```
-Arr::valueCase(['name'=>'houdunwang'],1); 
+$obj->valueCase(['name'=>'houdunwang'],1); 
 
 第2个参数为类型： 1 大写  0 小写
 ```
@@ -53,35 +53,35 @@ Arr::valueCase(['name'=>'houdunwang'],1);
 
 ```
 $data = ['status'=>1];
-$d = Arr::intToString($data,['status'=>[0=>'关闭',1=>'开启']]); 
+$d = $obj->intToString($data,['status'=>[0=>'关闭',1=>'开启']]); 
 ```
 
 ###数组中的字符串数字转为数值类型
 
 ```
 $data = ['status'=>'1','click'=>'200'];
-$d = Arr::stringToInt($data); 
+$d = $obj->stringToInt($data); 
 ```
 
 ###根据下标过滤数据元素
 
 ```
 $d = [ 'id' => 1, 'url' => 'houdunwang.com','title'=>'后盾网' ];
-print_r(Arr::filterKeys($d,['id','url']));
+print_r($obj->filterKeys($d,['id','url']));
 //过滤 下标为 id 的元素
 ```
 
 当第三个参数为 0 时只保留指定的元素
 ```
 $d = [ 'id' => 1, 'url' => 'houdunwang.com','title'=>'后盾网' ];
-p(Arr::filterKeys($d,['id'],0));
+p($obj->filterKeys($d,['id'],0));
 //只显示id与title 的元素
 ```
 
 ###获得树状结构
 
 ```
-Arr::tree($data, $title, $fieldPri = 'cid', $fieldPid = 'pid');
+$obj->tree($data, $title, $fieldPri = 'cid', $fieldPid = 'pid');
 参数                   	说明
 $data                 	数组
 $title                	字段名称
@@ -92,7 +92,7 @@ $fieldPid             	父 id
 ###获得目录列表
 
 ```
-Arr::channelList($data, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid', $level = 1);
+$obj->channelList($data, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid', $level = 1);
 
 参数                      	说明 
 data                 	操作的数组
@@ -106,7 +106,7 @@ level                 	等级（不需要传参数，系统运行时使用 )
 ###获得多级目录列表（多维数组）
 
 ```
-Arr::channelLevel($data, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid') 
+$obj->channelLevel($data, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid') 
 
 参数                          	说明
 data                      	操作的数组
@@ -119,7 +119,7 @@ fieldPid                  	父 ID 键名
 ###获得所有父级栏目
 
 ```
-Arr::parentChannel($data, $sid, $fieldPri = 'cid', $fieldPid = 'pid');
+$obj->parentChannel($data, $sid, $fieldPri = 'cid', $fieldPid = 'pid');
 
 参数                          	说明
 data                      	操作的数组
@@ -132,7 +132,7 @@ fieldPid                  	父 ID 键名
 ###是否为子栏目
 
 ```
-Arr::isChild($data, $sid, $pid, $fieldPri = 'cid', $fieldPid = 'pid')
+$obj->isChild($data, $sid, $pid, $fieldPri = 'cid', $fieldPid = 'pid')
 
 参数                          	说明
 data                      	操作的数组
@@ -145,7 +145,7 @@ fieldPid                  	父 ID 键名
 ###是否有子栏目
 
 ```
-Arr::hasChild($data, $cid, $fieldPid = 'pid')
+$obj->hasChild($data, $cid, $fieldPid = 'pid')
 
 参数                          	说明
 data                      	操作的数组
@@ -157,6 +157,6 @@ fieldPid                  	父 ID 键名
 ###迪卡尔乘积
 
 ```
-Arr::descarte($arr, $tmp = array())
+$obj->descarte($arr, $tmp = array())
 ```
 
