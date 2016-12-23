@@ -38,21 +38,18 @@ Arr::valueCase(['name'=>'houdunwang'],1);
 ```
 
 ###数组进行整数映射转换
-
 ```
 $data = ['status'=>1];
 $d = Arr::intToString($data,['status'=>[0=>'关闭',1=>'开启']]); 
 ```
 
 ###数组中的字符串数字转为数值类型
-
 ```
 $data = ['status'=>'1','click'=>'200'];
 $d = \houdunwang\arr\Arr::stringToInt($data); 
 ```
 
 ###根据下标过滤数据元素
-
 ```
 $d = [ 'id' => 1, 'url' => 'houdunwang.com','title'=>'后盾网' ];
 print_r(Arr::filterKeys($d,['id','url']));
@@ -101,7 +98,6 @@ fieldPid                  	父 ID 键名
 ```
 
 ###获得所有父级栏目
-
 ```
 Arr::parentChannel($data, $sid, $fieldPri = 'cid', $fieldPid = 'pid');
 参数                          	说明
@@ -113,7 +109,6 @@ fieldPid                  	父 ID 键名
 ```
 
 ###是否为子栏目
-
 ```
 Arr::isChild($data, $sid, $pid, $fieldPri = 'cid', $fieldPid = 'pid')
 参数                          	说明
@@ -125,7 +120,6 @@ fieldPid                  	父 ID 键名
 ```
 
 ###是否有子栏目
-
 ```
 Arr::hasChild($data, $cid, $fieldPid = 'pid')
 参数                          	说明
@@ -135,7 +129,6 @@ fieldPid                  	父 ID 键名
 ```
 
 ###迪卡尔乘积
-
 ```
 Arr::descarte($arr, $tmp = array())
 ```
