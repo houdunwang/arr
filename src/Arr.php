@@ -18,20 +18,18 @@ use houdunwang\arr\build\Base;
  * @author 向军
  */
 class Arr {
-	protected static function link() {
-		static $link = null;
-		if ( is_null( $link ) ) {
-			$link = new Base();
-		}
-
-		return $link;
-	}
+	protected $link = null;
 
 	public function __call( $method, $params ) {
-		return call_user_func_array( [ self::link(), $method ], $params );
+		if ( is_null( $this->link ) ) {
+			$this->link = new Base();
+		}
+		if ( method_exists( $this->link, $method ) ) {
+			return call_user_func_array( [ $this->link, $method ], $params );
+		}
 	}
 
 	public static function __callStatic( $name, $arguments ) {
-		return call_user_func_array( [ self::link(), $name ], $arguments );
+		return call_user_func_array( [ new static(), $name ], $arguments );
 	}
 }
