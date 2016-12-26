@@ -22,6 +22,13 @@ $d = ['web' => [ 'id' => 1, 'url' => 'houdunwang.com' ]];
 Arr::get($d,'web.url');
 ```
 
+####排队字段获取数据
+以下代码获取除 id、url以外的数据
+```
+$d = ['id' => 1,'url' => 'houdunwang.com','name'=>'后盾人'];
+print_r(Arr::getExtName($d,['id','url']));
+```
+
 ###设置数组元素值支持点语法
 ```
 $data = Arr::set([],'a.b.c',99);

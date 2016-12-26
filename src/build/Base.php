@@ -264,6 +264,25 @@ class Base {
 	}
 
 	/**
+	 * 排队字段获取数据
+	 *
+	 * @param array $data 数据
+	 * @param array $extName 排除的字段
+	 *
+	 * @return array
+	 */
+	public static function getExtName( array $data, array $extName ) {
+		$extData = [ ];
+		foreach ( (array) $data as $k => $v ) {
+			if ( ! in_array( $k, $extName ) ) {
+				$extData[ $k ] = $v;
+			}
+		}
+
+		return $extData;
+	}
+
+	/**
 	 * 设置数组元素值支持点语法
 	 *
 	 * @param array $data
