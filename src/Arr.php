@@ -20,9 +20,16 @@ use houdunwang\arr\build\Base;
 class Arr {
 	protected $link = null;
 
+	//更改缓存驱动
+	protected function driver() {
+		$this->link = new Base();
+
+		return $this;
+	}
+
 	public function __call( $method, $params ) {
 		if ( is_null( $this->link ) ) {
-			$this->link = new Base();
+			$this->driver();
 		}
 		if ( method_exists( $this->link, $method ) ) {
 			return call_user_func_array( [ $this->link, $method ], $params );
@@ -30,6 +37,11 @@ class Arr {
 	}
 
 	public static function __callStatic( $name, $arguments ) {
-		return call_user_func_array( [ new static(), $name ], $arguments );
+		static $link = null;
+		if ( is_null( $link ) ) {
+			$link = new static();
+		}
+
+		return call_user_func_array( [ $link, $name ], $arguments );
 	}
 }
