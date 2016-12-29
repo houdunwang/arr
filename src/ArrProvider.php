@@ -9,20 +9,20 @@
  * '-------------------------------------------------------------------*/
 namespace houdunwang\arr;
 
-use hdphp\kernel\ServiceProvider;
 
-class ArrProvider extends ServiceProvider {
+use houdunwang\framework\build\Provider;
+
+class ArrProvider extends Provider {
 
 	//延迟加载
 	public $defer = true;
 
 	public function boot() {
-
 	}
 
 	public function register() {
-		$this->app->single( 'Arr', function ( $app ) {
-			return new Arr( $app );
+		$this->app->single( 'Arr', function () {
+			return new Arr();
 		} );
 	}
 }

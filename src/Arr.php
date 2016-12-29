@@ -18,7 +18,7 @@ use houdunwang\arr\build\Base;
  * @author 向军
  */
 class Arr {
-	protected $link = null;
+	protected $link;
 
 	//更改缓存驱动
 	protected function driver() {
@@ -36,7 +36,16 @@ class Arr {
 		}
 	}
 
+	public static function single() {
+		static $link;
+		if ( is_null( $link ) ) {
+			$link = new static();
+		}
+
+		return $link;
+	}
+
 	public static function __callStatic( $name, $arguments ) {
-		return call_user_func_array( [ new static(), $name ], $arguments );
+		return call_user_func_array( [ static::single(), $name ], $arguments );
 	}
 }

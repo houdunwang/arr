@@ -9,9 +9,10 @@
  * '-------------------------------------------------------------------*/
 namespace houdunwang\arr;
 
-use hdphp\kernel\ServiceFacade;
 
-class ArrFacade extends ServiceFacade {
+use houdunwang\framework\build\Facade;
+
+class ArrFacade extends Facade {
 	public static function getFacadeAccessor() {
 		return 'Arr';
 	}
