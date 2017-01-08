@@ -245,8 +245,8 @@ class Base {
 	 * 如果键名不存在时返回默认值
 	 *
 	 * @param array $data
-	 * @param $key
-	 * @param null $value
+	 * @param string $key 名称
+	 * @param mixed $value 默认值
 	 *
 	 * @return array|mixed|null
 	 */
