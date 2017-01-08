@@ -241,6 +241,24 @@ class Base {
 	}
 
 	/**
+	 * 从数组中移除给定的值
+	 * @param array $data 原数组数据
+	 * @param array $values 要移除的值
+	 *
+	 * @return array
+	 */
+	public function del( array $data, array $values ) {
+		$news = [ ];
+		foreach ( $data as $key => $d ) {
+			if ( ! in_array( $d, $values ) ) {
+				$news[ $key ] = $d;
+			}
+		}
+
+		return $news;
+	}
+
+	/**
 	 * 根据键名获取数据
 	 * 如果键名不存在时返回默认值
 	 *
