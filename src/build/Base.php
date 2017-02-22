@@ -45,9 +45,9 @@ class Base {
 	}
 
 	/**
-	 * 获得所有子栏目
+	 * 获得栏目列表
 	 *
-	 * @param $data 栏目数据
+	 * @param $arr 栏目数据
 	 * @param int $pid 操作的栏目
 	 * @param string $html 栏目名前字符
 	 * @param string $fieldPri 表主键
@@ -56,8 +56,15 @@ class Base {
 	 *
 	 * @return array
 	 */
-	public function channelList( $data, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid', $level = 1 ) {
-		$data = $this->_channelList( $data, $pid, $html, $fieldPri, $fieldPid, $level );
+	public function channelList( $arr, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid', $level = 1 ) {
+		$pid  = is_array( $pid ) ? $pid : [ $pid ];
+		$data = [ ];
+		foreach ( $pid as $id ) {
+			$res = $this->_channelList( $arr, $id, $html, $fieldPri, $fieldPid, $level );
+			foreach ( $res as $k => $v ) {
+				$data[ $k ] = $v;
+			}
+		}
 		if ( empty( $data ) ) {
 			return $data;
 		}
@@ -242,6 +249,7 @@ class Base {
 
 	/**
 	 * 从数组中移除给定的值
+	 *
 	 * @param array $data 原数组数据
 	 * @param array $values 要移除的值
 	 *
