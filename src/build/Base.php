@@ -31,8 +31,14 @@ class Base
      *
      * @return array
      */
-    public function channelLevel($data, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid', $level = 1)
-    {
+    public function channelLevel(
+        $data,
+        $pid = 0,
+        $html = "&nbsp;",
+        $fieldPri = 'cid',
+        $fieldPid = 'pid',
+        $level = 1
+    ) {
         if (empty($data)) {
             return [];
         }
@@ -42,7 +48,14 @@ class Base
                 $arr[$v[$fieldPri]]           = $v;
                 $arr[$v[$fieldPri]]['_level'] = $level;
                 $arr[$v[$fieldPri]]['_html']  = str_repeat($html, $level - 1);
-                $arr[$v[$fieldPri]]["_data"]  = $this->channelLevel($data, $v[$fieldPri], $html, $fieldPri, $fieldPid, $level + 1);
+                $arr[$v[$fieldPri]]["_data"]  = $this->channelLevel(
+                    $data,
+                    $v[$fieldPri],
+                    $html,
+                    $fieldPri,
+                    $fieldPid,
+                    $level + 1
+                );
             }
         }
 
@@ -61,12 +74,25 @@ class Base
      *
      * @return array
      */
-    public function channelList($arr, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid', $level = 1)
-    {
+    public function channelList(
+        $arr,
+        $pid = 0,
+        $html = "&nbsp;",
+        $fieldPri = 'cid',
+        $fieldPid = 'pid',
+        $level = 1
+    ) {
         $pid  = is_array($pid) ? $pid : [$pid];
         $data = [];
         foreach ($pid as $id) {
-            $res = $this->_channelList($arr, $id, $html, $fieldPri, $fieldPid, $level);
+            $res = $this->_channelList(
+                $arr,
+                $id,
+                $html,
+                $fieldPri,
+                $fieldPid,
+                $level
+            );
             foreach ($res as $k => $v) {
                 $data[$k] = $v;
             }
@@ -80,10 +106,14 @@ class Base
             }
             $data[$n]['_first'] = false;
             $data[$n]['_end']   = false;
-            if ( ! isset($data[$n - 1]) || $data[$n - 1]['_level'] != $m['_level']) {
+            if ( ! isset($data[$n - 1])
+                || $data[$n - 1]['_level'] != $m['_level']
+            ) {
                 $data[$n]['_first'] = true;
             }
-            if (isset($data[$n + 1]) && $data[$n]['_level'] > $data[$n + 1]['_level']) {
+            if (isset($data[$n + 1])
+                && $data[$n]['_level'] > $data[$n + 1]['_level']
+            ) {
                 $data[$n]['_end'] = true;
             }
         }
@@ -97,8 +127,14 @@ class Base
     }
 
     //只供channelList方法使用
-    private function _channelList($data, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid', $level = 1)
-    {
+    private function _channelList(
+        $data,
+        $pid = 0,
+        $html = "&nbsp;",
+        $fieldPri = 'cid',
+        $fieldPid = 'pid',
+        $level = 1
+    ) {
         if (empty($data)) {
             return [];
         }
@@ -109,7 +145,14 @@ class Base
                 $v['_level'] = $level;
                 $v['_html']  = str_repeat($html, $level - 1);
                 array_push($arr, $v);
-                $tmp = $this->_channelList($data, $id, $html, $fieldPri, $fieldPid, $level + 1);
+                $tmp = $this->_channelList(
+                    $data,
+                    $id,
+                    $html,
+                    $fieldPri,
+                    $fieldPid,
+                    $level + 1
+                );
                 $arr = array_merge($arr, $tmp);
             }
         }
@@ -142,7 +185,9 @@ class Base
             }
             if ($v['_level'] != 1) {
                 $t = $title ? $v[$title] : '';
-                if (isset($arr[$k + 1]) && $arr[$k + 1]['_level'] >= $arr[$k]['_level']) {
+                if (isset($arr[$k + 1])
+                    && $arr[$k + 1]['_level'] >= $arr[$k]['_level']
+                ) {
                     $arr[$k]['_'.$title] = $str."├─ ".$v['_html'].$t;
                 } else {
                     $arr[$k]['_'.$title] = $str."└─ ".$v['_html'].$t;
@@ -171,8 +216,12 @@ class Base
      *
      * @return array
      */
-    public function parentChannel($data, $sid, $fieldPri = 'cid', $fieldPid = 'pid')
-    {
+    public function parentChannel(
+        $data,
+        $sid,
+        $fieldPri = 'cid',
+        $fieldPid = 'pid'
+    ) {
         if (empty($data)) {
             return $data;
         } else {
@@ -180,7 +229,12 @@ class Base
             foreach ($data as $v) {
                 if ($v[$fieldPri] == $sid) {
                     $arr[] = $v;
-                    $_n    = $this->parentChannel($data, $v[$fieldPid], $fieldPri, $fieldPid);
+                    $_n    = $this->parentChannel(
+                        $data,
+                        $v[$fieldPid],
+                        $fieldPri,
+                        $fieldPid
+                    );
                     if ( ! empty($_n)) {
                         $arr = array_merge($arr, $_n);
                     }
@@ -202,8 +256,13 @@ class Base
      *
      * @return bool
      */
-    public function isChild($data, $sid, $pid, $fieldPri = 'cid', $fieldPid = 'pid')
-    {
+    public function isChild(
+        $data,
+        $sid,
+        $pid,
+        $fieldPri = 'cid',
+        $fieldPid = 'pid'
+    ) {
         $_data = $this->channelList($data, $pid, '', $fieldPri, $fieldPid);
         foreach ($_data as $c) {
             //目标栏目为源栏目的子栏目
@@ -406,8 +465,10 @@ class Base
      *
      * @return mixed
      */
-    public function intToString($arr, array $map = ['status' => ['0' => '禁止', '1' => '启用']])
-    {
+    public function intToString(
+        $arr,
+        array $map = ['status' => ['0' => '禁止', '1' => '启用']]
+    ) {
         foreach ($map as $name => $m) {
             if (isset($arr[$name]) && array_key_exists($arr[$name], $m)) {
                 $arr['_'.$name] = $m[$arr[$name]];
@@ -428,7 +489,8 @@ class Base
     {
         $tmp = $data;
         foreach ((array)$tmp as $k => $v) {
-            $tmp[$k] = is_array($v) ? $this->stringToInt($v) : (is_numeric($v) ? intval($v) : $v);
+            $tmp[$k] = is_array($v) ? $this->stringToInt($v)
+                : (is_numeric($v) ? intval($v) : $v);
         }
 
         return $tmp;
