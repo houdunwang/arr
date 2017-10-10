@@ -20,6 +20,25 @@ namespace houdunwang\arr\build;
 class Base
 {
     /**
+     * 支持递归数组合并
+     *
+     * @param array $dest 原数组
+     * @param array $res  覆盖的数组
+     *
+     * @return array
+     */
+    public function merge($dest, $res)
+    {
+        $res = is_array($res) ? $res : [];
+        foreach ($dest as $k => $v) {
+            $res[$k] = isset($res[$k]) ? $res[$k] : $v;
+            $res[$k] = is_array($res[$k]) ? $this->merge($v, $res[$k]) : $res[$k];
+        }
+
+        return $res;
+    }
+
+    /**
      * 返回多层栏目
      *
      * @param        $data     操作的数组
@@ -107,7 +126,7 @@ class Base
             $data[$n]['_first'] = false;
             $data[$n]['_end']   = false;
             if ( ! isset($data[$n - 1])
-                || $data[$n - 1]['_level'] != $m['_level']
+                 || $data[$n - 1]['_level'] != $m['_level']
             ) {
                 $data[$n]['_first'] = true;
             }
