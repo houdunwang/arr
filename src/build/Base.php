@@ -23,7 +23,7 @@ class Base
      * 支持递归数组合并
      *
      * @param array $dest 原数组
-     * @param array $res  覆盖的数组
+     * @param array $res 覆盖的数组
      *
      * @return array
      */
@@ -42,11 +42,11 @@ class Base
      * 返回多层栏目
      *
      * @param        $data     操作的数组
-     * @param int    $pid      一级PID的值
-     * @param string $html     栏目名称前缀
+     * @param int $pid 一级PID的值
+     * @param string $html 栏目名称前缀
      * @param string $fieldPri 唯一键名，如果是表则是表的主键
      * @param string $fieldPid 父ID键名
-     * @param int    $level    不需要传参数（执行时调用）
+     * @param int $level 不需要传参数（执行时调用）
      *
      * @return array
      */
@@ -64,10 +64,10 @@ class Base
         $arr = [];
         foreach ($data as $v) {
             if ($v[$fieldPid] == $pid) {
-                $arr[$v[$fieldPri]]           = $v;
+                $arr[$v[$fieldPri]] = $v;
                 $arr[$v[$fieldPri]]['_level'] = $level;
-                $arr[$v[$fieldPri]]['_html']  = str_repeat($html, $level - 1);
-                $arr[$v[$fieldPri]]["_data"]  = $this->channelLevel(
+                $arr[$v[$fieldPri]]['_html'] = str_repeat($html, $level - 1);
+                $arr[$v[$fieldPri]]["_data"] = $this->channelLevel(
                     $data,
                     $v[$fieldPri],
                     $html,
@@ -85,11 +85,11 @@ class Base
      * 获得栏目列表
      *
      * @param        $arr      栏目数据
-     * @param int    $pid      操作的栏目
-     * @param string $html     栏目名前字符
+     * @param int $pid 操作的栏目
+     * @param string $html 栏目名前字符
      * @param string $fieldPri 表主键
      * @param string $fieldPid 父id
-     * @param int    $level    等级
+     * @param int $level 等级
      *
      * @return array
      */
@@ -101,7 +101,7 @@ class Base
         $fieldPid = 'pid',
         $level = 1
     ) {
-        $pid  = is_array($pid) ? $pid : [$pid];
+        $pid = is_array($pid) ? $pid : [$pid];
         $data = [];
         foreach ($pid as $id) {
             $res = $this->_channelList(
@@ -124,9 +124,9 @@ class Base
                 continue;
             }
             $data[$n]['_first'] = false;
-            $data[$n]['_end']   = false;
-            if ( ! isset($data[$n - 1])
-                 || $data[$n - 1]['_level'] != $m['_level']
+            $data[$n]['_end'] = false;
+            if (!isset($data[$n - 1])
+                || $data[$n - 1]['_level'] != $m['_level']
             ) {
                 $data[$n]['_first'] = true;
             }
@@ -162,7 +162,7 @@ class Base
             $id = $v[$fieldPri];
             if ($v[$fieldPid] == $pid) {
                 $v['_level'] = $level;
-                $v['_html']  = str_repeat($html, $level - 1);
+                $v['_html'] = str_repeat($html, $level - 1);
                 array_push($arr, $v);
                 $tmp = $this->_channelList(
                     $data,
@@ -180,6 +180,34 @@ class Base
     }
 
     /**
+     * 解析多级栏目
+     * @param Collection $categories
+     * @param int $pid
+     * @param int $level
+     * @return Collection
+     */
+    public function category(
+        $categories,
+        int $pid = 0,
+        string $title = 'title',
+        string $id = 'id',
+        string $parent_id = 'parent_id',
+        int $level = 1
+    ) {
+        $collection = collect([]);
+        foreach ($categories as $category) {
+            if ($category[$parent_id] == $pid) {
+                $category['level'] = $level;
+                $category['_' . $title] = ($level == 1 ? '' : '|' . str_repeat('-', $level)) . $category[$title];
+                $collection->push($category);
+                $collection = $collection->merge($this->category($categories, $category[$id], $title, $id, $parent_id,
+                    $level + 1));
+            }
+        }
+        return $collection;
+    }
+
+    /**
      * 获得树状数据
      *
      * @param        $data     数据
@@ -191,7 +219,7 @@ class Base
      */
     public function tree($data, $title, $fieldPri = 'cid', $fieldPid = 'pid')
     {
-        if ( ! is_array($data) || empty($data)) {
+        if (!is_array($data) || empty($data)) {
             return [];
         }
         $arr = $this->channelList($data, 0, '', $fieldPri, $fieldPid);
@@ -207,12 +235,12 @@ class Base
                 if (isset($arr[$k + 1])
                     && $arr[$k + 1]['_level'] >= $arr[$k]['_level']
                 ) {
-                    $arr[$k]['_'.$title] = $str."├─ ".$v['_html'].$t;
+                    $arr[$k]['_' . $title] = $str . "├─ " . $v['_html'] . $t;
                 } else {
-                    $arr[$k]['_'.$title] = $str."└─ ".$v['_html'].$t;
+                    $arr[$k]['_' . $title] = $str . "└─ " . $v['_html'] . $t;
                 }
             } else {
-                $arr[$k]['_'.$title] = $v[$title];
+                $arr[$k]['_' . $title] = $v[$title];
             }
         }
         //设置主键为$fieldPri
@@ -248,13 +276,13 @@ class Base
             foreach ($data as $v) {
                 if ($v[$fieldPri] == $sid) {
                     $arr[] = $v;
-                    $_n    = $this->parentChannel(
+                    $_n = $this->parentChannel(
                         $data,
                         $v[$fieldPid],
                         $fieldPri,
                         $fieldPid
                     );
-                    if ( ! empty($_n)) {
+                    if (!empty($_n)) {
                         $arr = array_merge($arr, $_n);
                     }
                 }
@@ -340,7 +368,7 @@ class Base
     /**
      * 从数组中移除给定的值
      *
-     * @param array $data   原数组数据
+     * @param array $data 原数组数据
      * @param array $values 要移除的值
      *
      * @return array
@@ -349,7 +377,7 @@ class Base
     {
         $news = [];
         foreach ($data as $key => $d) {
-            if ( ! in_array($d, $values)) {
+            if (!in_array($d, $values)) {
                 $news[$key] = $d;
             }
         }
@@ -361,9 +389,9 @@ class Base
      * 根据键名获取数据
      * 如果键名不存在时返回默认值
      *
-     * @param array  $data
-     * @param string $key   名称
-     * @param mixed  $value 默认值
+     * @param array $data
+     * @param string $key 名称
+     * @param mixed $value 默认值
      *
      * @return array|mixed|null
      */
@@ -384,7 +412,7 @@ class Base
     /**
      * 排队字段获取数据
      *
-     * @param array $data    数据
+     * @param array $data 数据
      * @param array $extName 排除的字段
      *
      * @return array
@@ -393,7 +421,7 @@ class Base
     {
         $extData = [];
         foreach ((array)$data as $k => $v) {
-            if ( ! in_array($k, $extName)) {
+            if (!in_array($k, $extName)) {
                 $extData[$k] = $v;
             }
         }
@@ -414,7 +442,7 @@ class Base
     {
         $tmp =& $data;
         foreach (explode('.', $key) as $d) {
-            if ( ! isset($tmp[$d])) {
+            if (!isset($tmp[$d])) {
                 $tmp[$d] = [];
             }
             $tmp = &$tmp[$d];
@@ -427,8 +455,8 @@ class Base
     /**
      * 将数组键名变成大写或小写
      *
-     * @param array $arr  数组
-     * @param int   $type 转换方式 1大写   0小写
+     * @param array $arr 数组
+     * @param int $type 转换方式 1大写   0小写
      *
      * @return array
      */
@@ -437,7 +465,7 @@ class Base
         $func = $type ? 'strtoupper' : 'strtolower';
         $data = []; //格式化后的数组
         foreach ($arr as $k => $v) {
-            $k        = $func($k);
+            $k = $func($k);
             $data[$k] = is_array($v) ? $this->keyCase($v, $type) : $v;
         }
 
@@ -461,7 +489,7 @@ class Base
      * 将数组中的值全部转为大写或小写
      *
      * @param array $arr
-     * @param int   $type 类型 1值大写 0值小写
+     * @param int $type 类型 1值大写 0值小写
      *
      * @return array
      */
@@ -490,7 +518,7 @@ class Base
     ) {
         foreach ($map as $name => $m) {
             if (isset($arr[$name]) && array_key_exists($arr[$name], $m)) {
-                $arr['_'.$name] = $m[$arr[$name]];
+                $arr['_' . $name] = $m[$arr[$name]];
             }
         }
 
@@ -520,7 +548,7 @@ class Base
      *
      * @param array $data 原数组数据
      * @param       $keys 参数的下标
-     * @param int   $type 1 存在在$keys时过滤  0 不在时过滤
+     * @param int $type 1 存在在$keys时过滤  0 不在时过滤
      *
      * @return array
      */
@@ -535,7 +563,7 @@ class Base
                 }
             } else {
                 //不在时过滤
-                if ( ! in_array($k, $keys)) {
+                if (!in_array($k, $keys)) {
                     unset($tmp[$k]);
                 }
             }
