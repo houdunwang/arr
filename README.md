@@ -16,12 +16,12 @@ composer require houdunwang/arr
 
 ```
 $d=['a'=>1,'b'=>2];
-\houdunwang\arr\Arr::get($d,'c','没有数据哟');
+(new \houdunwang\arr\Arr())->get($d,'c','没有数据哟');
 ```
 使用点语法查找：
 ```
 $d = ['web' => [ 'id' => 1, 'url' => 'houdunwang.com' ]];
-Arr::get($d,'web.url');
+(new \houdunwang\arr\Arr())->get($d,'web.url');
 ```
 
 #### 排队字段获取数据
@@ -29,33 +29,33 @@ Arr::get($d,'web.url');
 
 ```
 $d = ['id' => 1,'url' => 'houdunwang.com','name'=>'后盾人'];
-print_r(Arr::getExtName($d,['id','url']));
+print_r((new \houdunwang\arr\Arr())->getExtName($d,['id','url']));
 ```
 
 #### 设置数组元素值支持点语法
 
 ```
-$data = Arr::set([],'a.b.c',99);
+$data = (new \houdunwang\arr\Arr())->set([],'a.b.c',99);
 ```
 
 #### 改变数组键名大小写
 
 ```
 $data = array('name'=>'houdunwang',array('url'=>'hdphp.com'));
-$data = Arr::keyCase($data,1); 
+$data = (new \houdunwang\arr\Arr())->keyCase($data,1); 
 第2个参数为类型： 1 大写  0 小写
 ```
 
 #### 不区分大小写检测键名是否存
 
 ```
-Arr::keyExists('Hd',['hd'=>'后盾网']);
+(new \houdunwang\arr\Arr())->keyExists('Hd',['hd'=>'后盾网']);
 ```
 
 #### 数组值大小写转换
 
 ```
-Arr::valueCase(['name'=>'houdunwang'],1); 
+(new \houdunwang\arr\Arr())->valueCase(['name'=>'houdunwang'],1); 
 第2个参数为类型： 1 大写  0 小写
 ```
 
@@ -63,35 +63,35 @@ Arr::valueCase(['name'=>'houdunwang'],1);
 
 ```
 $data = ['status'=>1];
-$d = Arr::intToString($data,['status'=>[0=>'关闭',1=>'开启']]); 
+$d = (new \houdunwang\arr\Arr())->intToString($data,['status'=>[0=>'关闭',1=>'开启']]); 
 ```
 
 #### 数组中的字符串数字转为数值类型
 
 ```
 $data = ['status'=>'1','click'=>'200'];
-$d = \houdunwang\arr\Arr::stringToInt($data); 
+$d = (new \houdunwang\arr\Arr())->stringToInt($data); 
 ```
 
 #### 根据下标过滤数据元素
 
 ```
 $d = [ 'id' => 1, 'url' => 'houdunwang.com','title'=>'后盾网' ];
-print_r(Arr::filterKeys($d,['id','url']));
+print_r((new \houdunwang\arr\Arr())->filterKeys($d,['id','url']));
 //过滤 下标为 id 的元素
 ```
 
 当第三个参数为 0 时只保留指定的元素
 ```
 $d = [ 'id' => 1, 'url' => 'houdunwang.com','title'=>'后盾网' ];
-print_r(Arr::filterKeys($d,['id'],0));
+print_r((new \houdunwang\arr\Arr())->filterKeys($d,['id'],0));
 //只显示id与title 的元素
 ```
 
 #### 获得树状结构
 
 ```
-Arr::tree($data, $title, $fieldPri = 'cid', $fieldPid = 'pid');
+(new \houdunwang\arr\Arr())->tree($data, $title, $fieldPri = 'cid', $fieldPid = 'pid');
 参数                   	说明
 $data                 	数组
 $title                	字段名称
@@ -102,7 +102,7 @@ $fieldPid             	父 id
 #### 获得目录列表
 
 ```
-Arr::channelList($data, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid', $level = 1);
+(new \houdunwang\arr\Arr())->channelList($data, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid', $level = 1);
 参数                      	说明 
 data                 	操作的数组
 pid                  	父级栏目的 id 值
@@ -115,7 +115,7 @@ level                 	等级（不需要传参数，系统运行时使用 )
 #### 获得多级目录列表（多维数组）
 
 ```
-Arr::channelLevel($data, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid') 
+(new \houdunwang\arr\Arr())->channelLevel($data, $pid = 0, $html = "&nbsp;", $fieldPri = 'cid', $fieldPid = 'pid') 
 参数                          	说明
 data                      	操作的数组
 pid                      	父级栏目的 id 值
@@ -127,7 +127,7 @@ fieldPid                  	父 ID 键名
 #### 获得所有父级栏目
 
 ```
-Arr::parentChannel($data, $sid, $fieldPri = 'cid', $fieldPid = 'pid');
+(new \houdunwang\arr\Arr())->parentChannel($data, $sid, $fieldPri = 'cid', $fieldPid = 'pid');
 参数                          	说明
 data                      	操作的数组
 sid                      	子栏目
@@ -139,7 +139,7 @@ fieldPid                  	父 ID 键名
 #### 是否为子栏目
 
 ```
-Arr::isChild($data, $sid, $pid, $fieldPri = 'cid', $fieldPid = 'pid')
+(new \houdunwang\arr\Arr())->isChild($data, $sid, $pid, $fieldPri = 'cid', $fieldPid = 'pid')
 参数                          	说明
 data                      	操作的数组
 sid                      	子栏目id
@@ -151,7 +151,7 @@ fieldPid                  	父 ID 键名
 #### 是否有子栏目
 
 ```
-Arr::hasChild($data, $cid, $fieldPid = 'pid')
+(new \houdunwang\arr\Arr())->hasChild($data, $cid, $fieldPid = 'pid')
 参数                          	说明
 data                      	操作的数组
 cid                      	栏目cid
@@ -161,7 +161,7 @@ fieldPid                  	父 ID 键名
 #### 无限级栏目分类
 
 ```
-Arr::category($categories,$pid = 0,$title = 'title',$id = 'id',$parent_id = 'parent_id')
+(new \houdunwang\arr\Arr())->category($categories,$pid = 0,$title = 'title',$id = 'id',$parent_id = 'parent_id')
 参数								说明
 $categories						操作的数组
 $pid								父级编号
@@ -173,6 +173,6 @@ $parent_id						父级字段名
 #### 迪卡尔乘积
 
 ```
-Arr::descarte($arr, $tmp = array())
+(new \houdunwang\arr\Arr())->descarte($arr, $tmp = array())
 ```
 
