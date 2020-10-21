@@ -1,4 +1,5 @@
 <?php
+
 /** .-------------------------------------------------------------------
  * |    Author: 向军 <2300071698@qq.com>
  * |    WeChat: aihoudun
@@ -122,12 +123,14 @@ class Arr
             }
             $data[$n]['_first'] = false;
             $data[$n]['_end'] = false;
-            if (!isset($data[$n - 1])
+            if (
+                !isset($data[$n - 1])
                 || $data[$n - 1]['_level'] != $m['_level']
             ) {
                 $data[$n]['_first'] = true;
             }
-            if (isset($data[$n + 1])
+            if (
+                isset($data[$n + 1])
                 && $data[$n]['_level'] > $data[$n + 1]['_level']
             ) {
                 $data[$n]['_end'] = true;
@@ -197,8 +200,14 @@ class Arr
                 $category['level'] = $level;
                 $category['_' . $title] = ($level == 1 ? '' : '|' . str_repeat('-', $level)) . $category[$title];
                 $collection->push($category);
-                $collection = $collection->merge($this->category($categories, $category[$id], $title, $id, $parent_id,
-                    $level + 1));
+                $collection = $collection->merge($this->category(
+                    $categories,
+                    $category[$id],
+                    $title,
+                    $id,
+                    $parent_id,
+                    $level + 1
+                ));
             }
         }
         return $collection;
@@ -216,8 +225,8 @@ class Arr
      */
     public function tree($data, $title, $fieldPri = 'cid', $fieldPid = 'pid')
     {
-        if (!is_array($data) || empty($data)) {
-            return [];
+        if (count($data) == 0) {
+            return collect();
         }
         $arr = $this->channelList($data, 0, '', $fieldPri, $fieldPid);
         foreach ($arr as $k => $v) {
@@ -229,7 +238,8 @@ class Arr
             }
             if ($v['_level'] != 1) {
                 $t = $title ? $v[$title] : '';
-                if (isset($arr[$k + 1])
+                if (
+                    isset($arr[$k + 1])
                     && $arr[$k + 1]['_level'] >= $arr[$k]['_level']
                 ) {
                     $arr[$k]['_' . $title] = $str . "├─ " . $v['_html'] . $t;
@@ -241,10 +251,9 @@ class Arr
             }
         }
         //设置主键为$fieldPri
-        $data = [];
+        $data = collect();
         foreach ($arr as $d) {
-            //            $data[$d[$fieldPri]] = $d;
-            $data[] = $d;
+            $data->push($d);
         }
 
         return $data;
@@ -437,7 +446,7 @@ class Arr
      */
     public function set(array $data, $key, $value)
     {
-        $tmp =& $data;
+        $tmp = &$data;
         foreach (explode('.', $key) as $d) {
             if (!isset($tmp[$d])) {
                 $tmp[$d] = [];
