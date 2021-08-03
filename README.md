@@ -24,7 +24,7 @@ $d = ['web' => [ 'id' => 1, 'url' => 'houdunwang.com' ]];
 (new \houdunwang\arr\Arr())->get($d,'web.url');
 ```
 
-#### 排队字段获取数据
+#### 排除字段获取数据
 以下代码获取除 id、url以外的数据
 
 ```

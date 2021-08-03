@@ -416,7 +416,7 @@ class Arr
     }
 
     /**
-     * 排队字段获取数据
+     * 排除字段获取数据
      *
      * @param array $data 数据
      * @param array $extName 排除的字段
